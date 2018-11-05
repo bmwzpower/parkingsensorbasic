@@ -2,11 +2,11 @@
 * System Installed in Garage currently
 */
 //System 1
-int trigPin = 12;    //Trig - violet Jumper
-int echoPin = 13;   //Echo - yellow Jumper
-int clockPin = 11;  //IC Pin 11 - white Jumper
-int latchPin = 10;  //IC Pin 12 - Blue Jumper
-int dataPin = 9;   //IC Pin 14 - Green Jumper
+int trigPin = 12;
+int echoPin = 13;
+int clockPin = 11;  
+int latchPin = 10; 
+int dataPin = 9;
 
 bool awakeMode = true;
 int parkSense = 1;
@@ -14,6 +14,7 @@ int ticks = 0;
 int x = 0;
 int awakeTicks = 0;
 
+//LED Light Patterns to shift out
 byte possible_patterns[9] = {
 B00000000,
 B00000001,
@@ -42,8 +43,6 @@ void setup() {
 }
 
 void loop() {
-//  digitalWrite(0, HIGH);
-//  Serial.println("Pin 0 High");
   digitalWrite(trigPin, LOW);
   delayMicroseconds(2);
   
@@ -51,22 +50,9 @@ void loop() {
   digitalWrite(trigPin, HIGH);
   delayMicroseconds(10);
   digitalWrite(trigPin, LOW);
-//  Disable for forced variable testing
+
   duration = pulseIn(echoPin, HIGH);
   distance = duration*0.034/2/2.54;
-
-//if(distance > 0){
-//  distance = distance - 2;
-//}
-//else
-//{
-//  distance = 75;
-//}
- 
-//  Serial.print(distance);
-//  Serial.println(" in");
-//  Serial.print(parkSense);
-//  Serial.println(" ct");
   
   if(parkSense > 199)
   {
@@ -83,7 +69,6 @@ void loop() {
     Serial.println(" px");
   }
 
-//  proximity=map(distance, 0, 8, 8, 0);
   if(distance > 30)
   {
     proximity = 0; //Off
@@ -121,9 +106,6 @@ void loop() {
     proximity = 8; //3 Red
   }
   
-//  Serial.print(proximity);
-//  Serial.println(" px");
-  
   ticks = ticks + 1;
   x = ticks % 300;
   if(x == 0)
@@ -132,11 +114,6 @@ void loop() {
     Serial.print(awakeTicks);
     Serial.println(" mins awake");
   }
-//  Serial.print(x);
-//  Serial.println(" xval");
-//  Serial.print(ticks);
-//  Serial.println(" ticks");
-  
 
   if (proximity <= 0){
     proximity=0;
@@ -145,12 +122,6 @@ void loop() {
   else if (proximity >= 1 && proximity <= 5){
     parkSense=1;
   }
-//  else if (proximity >= 5 && proximity <= 6){
-//    if(parkSense < 200)
-//    {
-//    parkSense = parkSense + 1;
-//    }
-//  }
   else if (proximity >= 6 && proximity <= 8){
     if(parkSense < 200)
     {
@@ -169,8 +140,5 @@ void loop() {
     digitalWrite(latchPin, HIGH);  
   }
 
-//  delay(200);
-//  digitalWrite(0, LOW);
-//  Serial.println("Pin 0 Low");
   delay(200);
 }
